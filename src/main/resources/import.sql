@@ -1,0 +1,5 @@
+insert into users(full_name, document_type, document_number, email, happening) values('Sergio Manrique', 'Cédula de ciudadanía', '1000300300', 'seraleman1204@gmail.com', 'Taller de HTML');
+insert into users(full_name, document_type, document_number, email, happening) values('Hanna Rivera', 'Cédula de ciudadanía', '1017300300', 'hannafranco@gmail.com', 'Taller de CSS');
+insert into users(full_name, document_type, document_number, email, happening) values('Shannel Franco', 'Tarjeta de identidad', '90041296365', 'shannelfranco@gmail.com', 'Taller de HTML');
+insert into users(full_name, document_type, document_number, email, happening) values('Amanda Manrique', 'Cédula de ciudadanía', '98300300', 'amandamanrique@gmail.com', 'Taller de JavaScript');
+insert into users(full_name, document_type, document_number, email, happening) values('José Zapata', 'Cédula de ciudadanía', '72100450', 'josezapata@gmail.com', 'Taller de Docker'); 
