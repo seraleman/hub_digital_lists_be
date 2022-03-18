@@ -1,6 +1,4 @@
-package com.seraleman.digital_lists_be.components.user.dao;
-
-import com.seraleman.digital_lists_be.components.user.User;
+package com.seraleman.digital_lists_be.components.user;
 
 import org.springframework.data.repository.CrudRepository;
 
