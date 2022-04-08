@@ -1,19 +1,19 @@
 package com.seraleman.digital_lists_be.components.user.services;
 
-import com.seraleman.digital_lists_be.components.user.User;
+import java.util.List;
 
-import org.springframework.http.ResponseEntity;
+import com.seraleman.digital_lists_be.components.user.User;
 
 public interface IUserService {
 
-    public ResponseEntity<?> getAllUsers();
+    List<User> getAllUsers();
 
-    public ResponseEntity<?> getUserById(Long id);
+    List<User> getAllUsersByHappening(String happening);
 
-    public ResponseEntity<?> createUser(User user);
+    User getUserById(Long id);
 
-    public ResponseEntity<?> updateUserById(Long id, User user);
+    User saveUser(User user);
 
-    public ResponseEntity<?> deleteUserById(Long id);
+    void deleteUserById(Long id);
 
 }

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 // import javax.validation.constrains.NotNull;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "users")
 public class User {
@@ -14,18 +15,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @NotNull()
+    @NotNull
     @Column(name = "full_name")
     private String fullName;
 
+    @NotNull
     @Column(name = "document_type")
     private String documentType;
 
+    @NotNull
     @Column(name = "document_number")
     private String documentNumber;
 
+    @NotNull
     private String email;
 
+    @NotNull
     private String happening;
 
     public Long getId() {
