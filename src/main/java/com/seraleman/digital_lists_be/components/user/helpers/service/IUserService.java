@@ -1,4 +1,4 @@
-package com.seraleman.digital_lists_be.components.user.services;
+package com.seraleman.digital_lists_be.components.user.helpers.service;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import com.seraleman.digital_lists_be.components.user.User;
 
 public interface IUserService {
 
-    List<User> getAllUsers();
+    List<User> getUsers();
 
-    List<User> getAllUsersByHappening(String happening);
+    List<User> getUsersByReasonId(Long id);
 
     User getUserById(Long id);
 

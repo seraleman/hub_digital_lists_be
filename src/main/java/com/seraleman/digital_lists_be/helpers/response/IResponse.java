@@ -1,4 +1,4 @@
-package com.seraleman.digital_lists_be.services;
+package com.seraleman.digital_lists_be.helpers.response;
 
 import java.util.List;
 import java.util.Map;

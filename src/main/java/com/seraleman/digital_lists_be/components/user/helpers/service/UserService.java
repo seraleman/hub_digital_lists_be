@@ -1,4 +1,4 @@
-package com.seraleman.digital_lists_be.components.user.services;
+package com.seraleman.digital_lists_be.components.user.helpers.service;
 
 import java.util.List;
 
@@ -15,13 +15,13 @@ public class UserService implements IUserService {
     private IUserDao userDao;
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getUsers() {
         return (List<User>) userDao.findAll();
     }
 
     @Override
-    public List<User> getAllUsersByHappening(String happening) {
-        return userDao.findAllByhappening(happening);
+    public List<User> getUsersByReasonId(Long reasonId) {
+        return userDao.findAllByReasonId(reasonId);
     }
 
     @Override

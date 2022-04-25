@@ -1,14 +1,21 @@
 package com.seraleman.digital_lists_be.components.user;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-// import javax.validation.constrains.NotNull;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "users")
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.seraleman.digital_lists_be.components.reason.Reason;
+
+@Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -30,8 +37,12 @@ public class User {
     @NotNull
     private String email;
 
+    @ManyToOne
     @NotNull
-    private String happening;
+    private Reason reason;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime created;
 
     public Long getId() {
         return id;
@@ -73,12 +84,26 @@ public class User {
         this.email = email;
     }
 
-    public String getHappening() {
-        return happening;
+    public Reason getReason() {
+        return reason;
     }
 
-    public void setHappening(String happening) {
-        this.happening = happening;
+    public void setReason(Reason reason) {
+        this.reason = reason;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    @Override
+    public String toString() {
+        return "User [created=" + created + ", documentNumber=" + documentNumber + ", documentType=" + documentType
+                + ", email=" + email + ", fullName=" + fullName + ", id=" + id + ", reason=" + reason + "]";
     }
 
 }

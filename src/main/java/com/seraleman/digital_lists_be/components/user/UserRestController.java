@@ -1,11 +1,15 @@
 package com.seraleman.digital_lists_be.components.user;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import com.seraleman.digital_lists_be.components.user.services.IUserService;
-import com.seraleman.digital_lists_be.services.IResponse;
+import com.google.zxing.WriterException;
+import com.seraleman.digital_lists_be.components.user.helpers.service.IUserService;
+import com.seraleman.digital_lists_be.helpers.localDateTime.ILocalDateTime;
+import com.seraleman.digital_lists_be.helpers.qr.QRCodeGenerator;
+import com.seraleman.digital_lists_be.helpers.response.IResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -21,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("digitalLists/user")
+@RequestMapping("/digitalLists/user")
 public class UserRestController {
+
+    private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
 
     @Autowired
     private IUserService userService;
@@ -30,11 +36,14 @@ public class UserRestController {
     @Autowired
     IResponse response;
 
+    @Autowired
+    private ILocalDateTime localDateTime;
+
     @GetMapping("/")
     public ResponseEntity<?> getAllUsers() {
 
         try {
-            List<User> users = userService.getAllUsers();
+            List<User> users = userService.getUsers();
             if (users.size() == 0) {
                 return response.empty();
             }
@@ -44,10 +53,10 @@ public class UserRestController {
         }
     }
 
-    @GetMapping("/byHappening/{happening}")
-    public ResponseEntity<?> getAllUsersByHappening(@PathVariable String happening) {
+    @GetMapping("/byReason/{reasonId}")
+    public ResponseEntity<?> getUsersByReasonId(@PathVariable Long reasonId) {
         try {
-            List<User> users = userService.getAllUsersByHappening(happening);
+            List<User> users = userService.getUsersByReasonId(reasonId);
             if (users.size() == 0) {
                 return response.empty();
             }
@@ -58,13 +67,18 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+    public ResponseEntity<?> getUserById(@PathVariable Long id) throws WriterException, IOException {
 
         try {
             User user = userService.getUserById(id);
             if (user == null) {
                 return response.notFound(id);
             }
+            QRCodeGenerator.generateQRCodeImage(
+                    "localhost:8080/digitalLists/user/".concat(String.valueOf(id)),
+                    250, 250,
+                    imagePath);
+
             return response.found(user);
         } catch (DataAccessException e) {
             return response.errorDataAccess(e);
@@ -78,6 +92,7 @@ public class UserRestController {
             return response.invalidObject(result);
         }
         try {
+            user.setCreated(localDateTime.getLocalDateTime());
             return response.created(userService.saveUser(user));
         } catch (DataAccessException e) {
             return response.errorDataAccess(e);
@@ -100,7 +115,7 @@ public class UserRestController {
             userCurrent.setDocumentType(user.getDocumentType());
             userCurrent.setEmail(user.getEmail());
             userCurrent.setFullName(user.getFullName());
-            userCurrent.setHappening(user.getHappening());
+            userCurrent.setReason(user.getReason());
             userService.saveUser(userCurrent);
             return response.updated(userCurrent);
         } catch (DataAccessException e) {
