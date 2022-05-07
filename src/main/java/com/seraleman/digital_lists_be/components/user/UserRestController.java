@@ -86,13 +86,15 @@ public class UserRestController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result)
+            throws WriterException, IOException {
 
         if (result.hasErrors()) {
             return response.invalidObject(result);
         }
         try {
             user.setCreated(localDateTime.getLocalDateTime());
+            QRCodeGenerator.generateQRCodeImage("Probando hoy 07/05/2022", 250, 250, imagePath);
             return response.created(userService.saveUser(user));
         } catch (DataAccessException e) {
             return response.errorDataAccess(e);
