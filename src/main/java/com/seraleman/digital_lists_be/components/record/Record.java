@@ -28,6 +28,14 @@ public class Record {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
 
+    public Record() {
+    }
+
+    public Record(@NotNull User user, LocalDateTime created) {
+        this.user = user;
+        this.created = created;
+    }
+
     public Long getId() {
         return id;
     }
