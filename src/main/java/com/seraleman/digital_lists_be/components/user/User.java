@@ -1,6 +1,7 @@
 package com.seraleman.digital_lists_be.components.user;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,9 @@ public class User {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
+
+    @Column(name = "qr_byte", columnDefinition = "longblob", nullable = true)
+    private byte[] qrByte;
 
     public Long getId() {
         return id;
@@ -100,10 +104,19 @@ public class User {
         this.created = created;
     }
 
+    public byte[] getQrByte() {
+        return qrByte;
+    }
+
+    public void setQrByte(byte[] qrByte) {
+        this.qrByte = qrByte;
+    }
+
     @Override
     public String toString() {
         return "User [created=" + created + ", documentNumber=" + documentNumber + ", documentType=" + documentType
-                + ", email=" + email + ", fullName=" + fullName + ", id=" + id + ", reason=" + reason + "]";
+                + ", email=" + email + ", fullName=" + fullName + ", id=" + id + ", qrByte=" + Arrays.toString(qrByte)
+                + ", reason=" + reason + "]";
     }
 
 }

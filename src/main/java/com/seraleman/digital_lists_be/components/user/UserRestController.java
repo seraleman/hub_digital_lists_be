@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/digitalLists/user")
 public class UserRestController {
 
-    private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
+    // private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
 
     @Autowired
     private IUserService userService;
@@ -74,10 +74,6 @@ public class UserRestController {
             if (user == null) {
                 return response.notFound(id);
             }
-            QRCodeGenerator.generateQRCodeImage(
-                    "localhost:8080/digitalLists/user/".concat(String.valueOf(id)),
-                    250, 250,
-                    imagePath);
 
             return response.found(user);
         } catch (DataAccessException e) {
@@ -86,14 +82,24 @@ public class UserRestController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result)
+            throws WriterException, IOException {
 
         if (result.hasErrors()) {
             return response.invalidObject(result);
         }
         try {
             user.setCreated(localDateTime.getLocalDateTime());
-            return response.created(userService.saveUser(user));
+            User userNew = userService.saveUser(user);
+
+            userNew.setQrByte(QRCodeGenerator.generateByteQRCode(
+                    "https://hub-digital-lists-backend.herokuapp.com/digitalLists/record/create/"
+                            .concat(String.valueOf(
+                                    userNew.getId())),
+                    250, 250));
+            System.out.println(userNew.getQrByte());
+            System.out.println("Se envía QR al correo");
+            return response.created(userService.saveUser(userNew));
         } catch (DataAccessException e) {
             return response.errorDataAccess(e);
         }

@@ -5,6 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.seraleman.digital_lists_be.components.record.helpers.service.IRecordService;
+import com.seraleman.digital_lists_be.components.user.User;
+import com.seraleman.digital_lists_be.components.user.helpers.service.IUserService;
+import com.seraleman.digital_lists_be.helpers.localDateTime.ILocalDateTime;
 import com.seraleman.digital_lists_be.helpers.response.IResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,24 @@ public class RecordRestController {
 
     @Autowired
     private IResponse response;
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ILocalDateTime localDateTime;
+
+    @GetMapping("/create/{userId}")
+    public ResponseEntity<?> createReasonByQR(@PathVariable Long userId) {
+        try {
+            User user = userService.getUserById(userId);
+            Record record = new Record(user, localDateTime.getLocalDateTime());
+            return response.created(recordService.saveRecord(record));
+
+        } catch (DataAccessException e) {
+            return response.errorDataAccess(e);
+        }
+    }
 
     @GetMapping("/")
     public ResponseEntity<?> getReasons() {
