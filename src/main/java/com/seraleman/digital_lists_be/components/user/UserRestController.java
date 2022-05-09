@@ -14,6 +14,8 @@ import com.seraleman.digital_lists_be.helpers.response.IResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRestController {
 
     // private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Autowired
     private IUserService userService;
@@ -97,8 +101,14 @@ public class UserRestController {
                             .concat(String.valueOf(
                                     userNew.getId())),
                     250, 250));
-            System.out.println(userNew.getQrByte());
-            System.out.println("Se envía QR al correo");
+
+            SimpleMailMessage email = new SimpleMailMessage();
+
+            email.setTo(userNew.getEmail());
+            email.setSubject("Confirmación asistencia taller HUB");
+            email.setText("Probando -- acá va la imagen del QR");
+            mailSender.send(email);
+
             return response.created(userService.saveUser(userNew));
         } catch (DataAccessException e) {
             return response.errorDataAccess(e);
