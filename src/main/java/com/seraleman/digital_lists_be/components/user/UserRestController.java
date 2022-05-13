@@ -1,8 +1,12 @@
 package com.seraleman.digital_lists_be.components.user;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import com.google.zxing.WriterException;
@@ -29,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/digitalLists/user")
 public class UserRestController {
 
-    private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
+    // private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
 
     @Autowired
     private IUserService userService;
@@ -99,11 +103,15 @@ public class UserRestController {
                                     userNew.getId())),
                     250, 250));
 
-            QRCodeGenerator.generateImageQRCode(
-                    "https://hub-digital-lists-backend.herokuapp.com/digitalLists/record/create/"
-                            .concat(String.valueOf(
-                                    userNew.getId())),
-                    250, 250, imagePath);
+            // QRCodeGenerator.generateImageQRCode(
+            // "https://hub-digital-lists-backend.herokuapp.com/digitalLists/record/create/"
+            // .concat(String.valueOf(
+            // userNew.getId())),
+            // 250, 250, imagePath);
+
+            ByteArrayInputStream inStreambj = new ByteArrayInputStream(userNew.getQrByte());
+            BufferedImage newImage = ImageIO.read(inStreambj);
+            ImageIO.write(newImage, "png", new File("qr.png"));
 
             Email.sendMessage(userNew.getEmail());
 
