@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import com.google.zxing.WriterException;
 import com.seraleman.digital_lists_be.components.user.helpers.service.IUserService;
+import com.seraleman.digital_lists_be.helpers.email.Email;
 import com.seraleman.digital_lists_be.helpers.localDateTime.ILocalDateTime;
 import com.seraleman.digital_lists_be.helpers.qr.QRCodeGenerator;
 import com.seraleman.digital_lists_be.helpers.response.IResponse;
@@ -14,8 +15,6 @@ import com.seraleman.digital_lists_be.helpers.response.IResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/digitalLists/user")
 public class UserRestController {
 
-    // private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
-    @Autowired
-    private JavaMailSender mailSender;
+    private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
 
     @Autowired
     private IUserService userService;
@@ -102,12 +99,19 @@ public class UserRestController {
                                     userNew.getId())),
                     250, 250));
 
-            SimpleMailMessage email = new SimpleMailMessage();
+            QRCodeGenerator.generateImageQRCode(
+                    "https://hub-digital-lists-backend.herokuapp.com/digitalLists/record/create/"
+                            .concat(String.valueOf(
+                                    userNew.getId())),
+                    250, 250, imagePath);
 
-            email.setTo(userNew.getEmail());
-            email.setSubject("Confirmación asistencia taller HUB");
-            email.setText("Probando -- acá va la imagen del QR");
-            mailSender.send(email);
+            Email.sendMessage(userNew.getEmail());
+
+            // SimpleMailMessage email = new SimpleMailMessage();
+            // email.setTo(userNew.getEmail());
+            // email.setSubject("Confirmación asistencia taller HUB");
+            // email.setText("Probando -- acá va la imagen del QR");
+            // mailSender.send(email);
 
             return response.created(userService.saveUser(userNew));
         } catch (DataAccessException e) {
