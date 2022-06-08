@@ -75,10 +75,6 @@ Módulo backend encargado de adminitrar los registros de las visitas al HUB de i
 - SpringBoot
 - MySQL
 
-## Arquitectura
-
-![Image text](/src/main/resources/static/arquitectura.png)
-
 ## Despliegue
 
 ### Base de Datos
