@@ -33,8 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/digitalLists/user")
 public class UserRestController {
 
-    // private final String imagePath = "./src/main/resources/qrCodes/QRCode.png";
-
     @Autowired
     private IUserService userService;
 
@@ -97,29 +95,17 @@ public class UserRestController {
             user.setCreated(localDateTime.getLocalDateTime());
             User userNew = userService.saveUser(user);
 
-            userNew.setQrByte(QRCodeGenerator.generateByteQRCode(
-                    "https://hub-digital-lists-backend.herokuapp.com/digitalLists/record/create/"
-                            .concat(String.valueOf(
-                                    userNew.getId())),
-                    250, 250));
-
-            // QRCodeGenerator.generateImageQRCode(
-            // "https://hub-digital-lists-backend.herokuapp.com/digitalLists/record/create/"
-            // .concat(String.valueOf(
-            // userNew.getId())),
-            // 250, 250, imagePath);
+            userNew.setQrByte(QRCodeGenerator
+                    .generateByteQRCode(
+                            "https://hub-digital-lists-backend.herokuapp.com/digitalLists/record/create/"
+                                    .concat(String.valueOf(userNew.getId())),
+                            250, 250));
 
             ByteArrayInputStream inStreambj = new ByteArrayInputStream(userNew.getQrByte());
             BufferedImage newImage = ImageIO.read(inStreambj);
             ImageIO.write(newImage, "png", new File("qr.png"));
 
             Email.sendMessage(userNew.getEmail());
-
-            // SimpleMailMessage email = new SimpleMailMessage();
-            // email.setTo(userNew.getEmail());
-            // email.setSubject("Confirmación asistencia taller HUB");
-            // email.setText("Probando -- acá va la imagen del QR");
-            // mailSender.send(email);
 
             return response.created(userService.saveUser(userNew));
         } catch (DataAccessException e) {

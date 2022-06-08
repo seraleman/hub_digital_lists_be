@@ -108,9 +108,10 @@ public class Email {
 
     public static void sendMessage(String recipient) {
         // información y credenciales
-        String host = "smtp.gmail.com";
+        // String host = "smtp.gmail.com";
+        String host = "outlook.office365.com";
         String port = "587";
-        String mailFrom = "testsamdev12@gmail.com";
+        String mailFrom = "testhubdl@outlook.es";
         String password = "probando123";
 
         // información del mensaje
@@ -119,7 +120,7 @@ public class Email {
         StringBuffer body = new StringBuffer(
                 "<html>Este mensaje es una prueba de envío de imágenes desde java.<br>")
                 .append("Enviando código QR:<br>")
-                .append("<img src=\"cid:qr\" width=\"30%\" height=\"30%\" /><br>")
+                .append("<img src=\"cid:qr\" width=\"50%\" height=\"50%\" /><br>")
                 .append("Fin del mensaje")
                 .append("</html>");
 
