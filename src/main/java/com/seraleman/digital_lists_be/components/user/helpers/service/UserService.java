@@ -25,6 +25,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User getUserByDocumentNumber(Integer userDocumentNumber) {
+        return userDao.findByDocumentNumber(userDocumentNumber);
+    }
+
+    @Override
     public User getUserById(Long id) {
         return userDao.findById(id).orElse(null);
     }

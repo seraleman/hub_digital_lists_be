@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.seraleman.digital_lists_be.components.user.User;
+
 @Component
 public class ResponseImpl implements IResponse {
 
@@ -68,6 +70,17 @@ public class ResponseImpl implements IResponse {
     }
 
     @Override
+    public ResponseEntity<Map<String, Object>> itAlreadyExists(User user) {
+        response = new LinkedHashMap<>();
+        response.put("message", "Usuario con número de documento '"
+                .concat(user.getDocumentNumber().toString())
+                .concat("' ya está registrado en la razón '")
+                .concat(user.getReason().getId().toString())
+                .concat("'"));
+        return new ResponseEntity<Map<String, Object>>(this.response, HttpStatus.NOT_FOUND);
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> list(List<?> objs) {
         response = new LinkedHashMap<>();
         Map<String, Object> data = new LinkedHashMap<>();
@@ -89,6 +102,14 @@ public class ResponseImpl implements IResponse {
     public ResponseEntity<Map<String, Object>> notFound(Object id) {
         response = new LinkedHashMap<>();
         response.put("message", "Objeto con id '".concat(id.toString()).concat("' no existe en la base de datos"));
+        return new ResponseEntity<Map<String, Object>>(this.response, HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> notFoundByDocumentNumber(Integer documentNumberUser) {
+        response = new LinkedHashMap<>();
+        response.put("message", "Usuario con número de documento '".concat(
+                documentNumberUser.toString()).concat("' no existe en la base de datos"));
         return new ResponseEntity<Map<String, Object>>(this.response, HttpStatus.NOT_FOUND);
     }
 

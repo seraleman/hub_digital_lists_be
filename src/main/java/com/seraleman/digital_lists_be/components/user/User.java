@@ -33,7 +33,7 @@ public class User {
 
     @NotNull
     @Column(name = "document_number")
-    private String documentNumber;
+    private Integer documentNumber;
 
     @NotNull
     private String email;
@@ -72,11 +72,11 @@ public class User {
         this.documentType = documentType;
     }
 
-    public String getDocumentNumber() {
+    public Integer getDocumentNumber() {
         return documentNumber;
     }
 
-    public void setDocumentNumber(String documentNumber) {
+    public void setDocumentNumber(Integer documentNumber) {
         this.documentNumber = documentNumber;
     }
 
