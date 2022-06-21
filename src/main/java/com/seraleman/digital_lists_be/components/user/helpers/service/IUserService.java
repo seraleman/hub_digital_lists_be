@@ -10,6 +10,8 @@ public interface IUserService {
 
     List<User> getUsersByReasonId(Long id);
 
+    User getUserByDocumentNumber(Integer userDocumentNumber);
+
     User getUserById(Long id);
 
     User saveUser(User user);

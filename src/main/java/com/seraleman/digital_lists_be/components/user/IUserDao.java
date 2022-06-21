@@ -7,4 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface IUserDao extends CrudRepository<User, Long> {
 
     List<User> findAllByReasonId(Long reasonId);
+
+    User findByDocumentNumber(Integer userDocumentNumber);
 }

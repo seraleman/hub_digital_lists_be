@@ -108,7 +108,6 @@ public class Email {
 
     public static void sendMessage(String recipient) {
         // información y credenciales
-        // String host = "smtp.gmail.com";
         String host = "outlook.office365.com";
         String port = "587";
         String mailFrom = "testhubdl@outlook.es";
