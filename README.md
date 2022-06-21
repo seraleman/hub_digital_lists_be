@@ -5,8 +5,13 @@
 1. [Descripción](#descripción)
 2. [Diagrama](#diagrama)
 3. [Tecnología](#tecnología)
-4. [Despliegue](#despliegue)
-5. [Endpoints](#endpoints)
+4. [Pruebas y despliegue](#pruebas-y-despliegue)  
+&nbsp;4.1 [Base de datos](#base-de-datos)  
+&nbsp;4.2 [Módulo](#módulo)  
+&nbsp;4.3 [Endpoints](#endpoints)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3.1 [Razones](#razones-reason)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3.2 [Usuarios](#usuarios-user)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3.3 [Registros](#registros-record)
 6. [Autor](#autor)
 
 ## Descripción
@@ -75,7 +80,7 @@ Módulo backend encargado de adminitrar los registros de las visitas al HUB de i
 - SpringBoot
 - MySQL
 
-## Despliegue
+## Pruebas y despliegue
 
 ### Base de Datos
 
@@ -93,121 +98,138 @@ Una copia del módulo está desplegada en Heroku, se puede acceder a él en la s
 
 Este componente desplegado solo hace el trabajo de persistir la información en la base de datos al leer el código QR ya que era necesario que existiera en la web.
 
-## Endpoints
+### Endpoints
 
-Se recomienda probarse en local o en despliegue definitico máquina virtual. Si se despliega en heroku no generará código QR por cuestión de configuración.Caso contrario, probado en local sí generará el código.
+Se recomienda probarse en local o en despliegue definitico máquina virtual. Si se despliega en heroku no generará código QR por cuestión de configuración. Caso contrario, probado en local sí generará el código.
 
-A continuación enuncio los endpoints disponibles en el componente:
+A continuación enuncio los endpoints disponibles en el componente (recuerde cambiar `<url_despliegue>` por la url de despliegue o de prueba `localhost:8080`):
 
-### Razones (reason)
+### **Razones (reason)**
 
-- Listar todos las razones:
+> Listar todas las razones:
+>> Verbo Get  
+`<url_despliegue>/digitalLists/reason/`  
 
-`url/digitalLists/reason/`
+> Listar razón por id:
+>> Verbo Get  
+`<url_despliegue>/digitalLists/reason/4`
 
-_Verbo Get._
+> Crear razón:
+>> Verbo Post  
+`<url_despliegue>/digitalLists/reason/`  
+_Se debe pasar el objeto 'reason'._
+```
+{
+    "name": "Taller 4.0",
+    "eventDate": "2021-06-10 13:00:00",
+    "description": "Lanzamiento ruta RIIES Hospital General"
+}
+```
+> Actualizar razón por id:
+>> Verbo Put  
+`<url_despliegue>/digitalLists/reason/4`  
+_Se debe pasar el objeto 'reason' actualizado._
+```
+{
+  "eventDate": "2021-12-05 14:00:00",
+  "name": "Taller CSS",
+  "description": "Lanzamiento ruta RIIES Hospital General"
+}
+```
 
-- Listar razón por id:
+> Eliminar razón por id:
+>> Verbo Delete  
+`<url_despliegue>/digitalLists/reason/4`
 
-`url/digitalLists/reason/<id>`
 
-_Verbo Get._
+### **Usuarios (user)**
 
-- Crear razón:
+> Listar todos los usuarios:
+>> Verbo Get  
+`<url_despliegue>/digitalLists/user/`  
 
-`url/digitalLists/reason/`
+> Listar usuario por id:
+>> Verbo Get  
+`<url_despliegue>/digitalLists/user/4`
 
-_Verbo Post._
+> Listar usuario por número de documento:
+>> Verbo Get  
+`<url_despliegue>/digitalLists/user/1032658923`
 
-_Se debe pasar el objeto 'reason' con sus respectivos campos (name, description(opcional), eventDate)._
+> Crear usuario:
+>> Verbo Post  
+`<url_despliegue>/digitalLists/user/`  
+_Se debe pasar el objeto 'user'._
+```
+{
+  "documentType": "Cédula de ciudadanía",
+  "email": "petropresidente@gmail.com",
+  "documentNumber": "1000000002",
+  "fullName": "Gustavo Petro",
+  "reason": {
+    "id": 4
+  }
+}
+```
 
-- Actualizar razón por id:
+> Actualizar usuario por id:
+>>Verbo Put  
+`<url_despliegue>/digitalLists/user/4`  
+_Se debe pasar el objeto 'user' actualizado._
+```
+{
+  "fullName": "Daniel Correa prueba",
+  "documentType": "Cédula de ciudadanía",
+  "documentNumber": "10326589",
+  "email": "daniel@gmail.com",
+  "happening": "Taller de HTML"
+}
+```
 
-`url/digitalLists/reason/<id>`
+> Eliminar usuario por id:
+Verbo Delete  
+`<url_despliegue>/digitalLists/user/4`  
 
-_Verbo Put._
 
-_Se debe pasar el objeto reason con sus respectivos campos actualizados (name, description(opcional), eventDate)._
+### **Registros (record)**
 
-- Eliminar razón por id:
+> Listar todos los registros:
+>> Verbo Get  
+`<url_despliegue>/digitalLists/record/`
 
-`url/digitalLists/reason/<id>`
+> Listar registro por id:
+>> Verbo Get  
+`<url_despliegue>/digitalLists/record/4`  
 
-_Verbo Delete._
+> Crear registro:
+>> Verbo Post  
+`<url_despliegue>/digitalLists/record/`  
+_Se debe pasar el objeto 'record'._
+```
+{
+    "user":{
+        "id": 4
+    }
+}
+```
 
-### Usuarios (user)
+> Actualizar registro por id:
+>> Verbo Put  
+`<url_despliegue>/digitalLists/record/4`  
+_Se debe pasar el objeto 'record' actualizado._
+```
+{
+  "user": {
+    "id": 14
+  }
+}
+```
 
-- Listar todos los usuarios:
+> Eliminar usuario por id:
+>> Verbo Delete  
+`<url_despliegue>/digitalLists/record/4`
 
-`url/digitalLists/user/`
-
-_Verbo Get._
-
-- Listar usuario por id:
-
-`url/digitalLists/user/<id>`
-
-_Verbo Get._
-
-- Crear usuario:
-
-`url/digitalLists/user/`
-
-_Verbo Post._
-
-_Se debe pasar el objeto 'user' con sus respectivos campos (fullName, documentType, documentNumber, email, reason:{id})._
-
-- Actualizar usuario por id:
-
-`url/digitalLists/user/<id>`
-
-_Verbo Put._
-
-_Se debe pasar el objeto 'user' con sus respectivos campos actualizados (fullName, documentType, documentNumber, email, reason:{id})._
-
-- Eliminar usuario por id:
-
-`url/digitalLists/user/<id>`
-
-_Verbo Delete._
-
-### Registros (record)
-
-- Listar todos los registros:
-
-`url/digitalLists/record/`
-
-_Verbo Get._
-
-- Listar registro por id:
-
-`url/digitalLists/record/<id>`
-
-_Verbo Get._
-
-- Crear registro:
-
-`url/digitalLists/record/`
-
-_Verbo Post._
-
-_Se debe pasar el objeto 'record' con el campo (user:{id})._
-
-- Actualizar registro por id:
-
-`url/digitalLists/record/<id>`
-
-_Verbo Put._
-
-_Se debe pasar el objeto 'record' con sus respectivos campos actualizados (user:{id})._
-
-- Eliminar usuario por id:
-
-`url/digitalLists/record/<id>`
-
-_Verbo Delete._
 
 ## Autor
-
-[Sergio Manrique](https://www.linkedin.com/in/seraleman/)
+**[Sergio Manrique](https://www.linkedin.com/in/seraleman/)**
 

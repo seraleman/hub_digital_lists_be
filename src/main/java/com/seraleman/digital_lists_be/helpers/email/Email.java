@@ -108,10 +108,6 @@ public class Email {
 
     public static void sendMessage(String recipient) {
         // información y credenciales
-<<<<<<< HEAD
-        // String host = "smtp.gmail.com";
-=======
->>>>>>> ea18b41 (Se corrige envío de QR y se implementa funcionalidad para que mismo usuario con misma razón no se cree.)
         String host = "outlook.office365.com";
         String port = "587";
         String mailFrom = "testhubdl@outlook.es";
